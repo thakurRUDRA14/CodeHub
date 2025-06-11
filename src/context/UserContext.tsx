@@ -30,7 +30,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             return saved ? saved : "Coder";
         });
         setJoinedDate(() => {
-            const saved = localStorage.getItem("joinedDate");
+            const saved = localStorage.getItem("lastSolvedDate");
             return saved ? saved : new Date().toISOString().split("T")[0];
         });
         setStreak(() => {
