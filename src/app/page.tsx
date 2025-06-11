@@ -10,7 +10,7 @@ const DashboardPage: React.FC = () => {
 
     return (
         <div className='bg-white p-6 rounded-xl shadow-md'>
-            <h2 className='text-xl font-semibold text-gray-900 mb-4'>Problems</h2>
+            <h2 className='text-3xl sm:text-5xl font-semibold text-gray-900 mb-4'>Problems</h2>
             <div className='space-y-4'>
                 {questions.map((question) => (
                     <QuestionCard

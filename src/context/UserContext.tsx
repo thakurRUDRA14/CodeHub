@@ -10,6 +10,7 @@ interface UserContextType {
     solvedQuestions: Set<string>;
     lastSolvedDate: string | null;
     solveQuestion: (id: string) => void;
+    redeemItem: (cost: number) => boolean;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -90,6 +91,14 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setLastSolvedDate(today);
     };
 
+    const redeemItem = (cost: number) => {
+        if (coins >= cost) {
+            setCoins(coins - cost);
+            return true;
+        }
+        return false;
+    };
+
     return (
         <UserContext.Provider
             value={{
@@ -100,6 +109,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 solvedQuestions,
                 lastSolvedDate,
                 solveQuestion,
+                redeemItem,
             }}>
             {children}
         </UserContext.Provider>

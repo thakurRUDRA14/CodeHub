@@ -26,7 +26,7 @@ const Button: React.FC<ButtonProps> = ({ children, variant = "primary", size = "
 
     return (
         <button
-            className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${widthClass}`}
+            className={`${baseClasses} ${variants[variant]} ${sizes[size]} ${widthClass} ${props.disabled ? "cursor-not-allowed" : ""}`}
             {...props}>
             {children}
         </button>
