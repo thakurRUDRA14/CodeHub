@@ -2,12 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import StreakCounter from "./ui/StreakCounter";
-import CoinCounter from "./ui/CoinCounter";
+import StreakCounter from "./ui/streakCounter";
+import CoinCounter from "./ui/coinCounter";
+import { useUser } from "@/context/UserContext";
 
 const Navbar: React.FC = () => {
-    const streak = 7;
-    const coins = 150;
+    const { name, streak, coins } = useUser();
 
     return (
         <nav className='bg-white shadow-sm sticky top-0 z-10'>
@@ -34,9 +34,9 @@ const Navbar: React.FC = () => {
                         </Link>
 
                         <Link href='/profile'>
-                            <div className='flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 cursor-pointer hover:scale-105'>
+                            <div className='flex items-center justify-center w-10 h-10 rounded-full bg-indigo-100 cursor-pointer hover:scale-105 transition-allduration-300'>
                                 <div className='bg-indigo-500 w-8 h-8 rounded-full flex items-center justify-center'>
-                                    <span className='text-white font-bold'>R</span>
+                                    <span className='text-white font-bold'>{name[0].toUpperCase()}</span>
                                 </div>
                             </div>
                         </Link>
