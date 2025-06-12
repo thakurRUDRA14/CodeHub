@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import StreakCounter from "./ui/streakCounter";
 import CoinCounter from "./ui/coinCounter";
@@ -11,6 +11,21 @@ const Navbar: React.FC = () => {
     const { name, streak, coins, solvedDates } = useUser();
     const [isOpen, setIsOpen] = useState(false);
     const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
     return (
         <nav className='bg-white shadow-sm sticky top-0 z-10'>
@@ -28,7 +43,9 @@ const Navbar: React.FC = () => {
                     </div>
 
                     <div className='flex items-center space-x-4'>
-                        <div className='relative'>
+                        <div
+                            className='relative'
+                            ref={dropdownRef}>
                             <div
                                 onClick={() => setIsOpen((prev) => !prev)}
                                 className='cursor-pointer'>
