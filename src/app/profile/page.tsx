@@ -6,18 +6,7 @@ import CalendarView from "../../components/CalendarView";
 import { format } from "date-fns";
 
 const ProfilePage: React.FC = () => {
-    const { name, joinedDate, streak, coins, solvedQuestions, lastSolvedDate } = useUser();
-    const solvedDates = new Set<string>();
-    if (lastSolvedDate) {
-        solvedDates.add(lastSolvedDate);
-    }
-
-    const today = new Date();
-    for (let i = 0; i < 100; i++) {
-        const randomDay = new Date();
-        randomDay.setDate(today.getDate() - Math.floor(Math.random() * 365));
-        solvedDates.add(randomDay.toISOString().split("T")[0]);
-    }
+    const { name, joinedDate, streak, coins, solvedQuestions, solvedDates } = useUser();
 
     return (
         <div className='space-y-6'>

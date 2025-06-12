@@ -9,6 +9,7 @@ interface UserContextType {
     coins: number;
     solvedQuestions: Set<string>;
     lastSolvedDate: string | null;
+    solvedDates: Map<string, number>;
     solveQuestion: (id: string) => void;
     redeemItem: (cost: number) => boolean;
 }
@@ -23,32 +24,23 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const [coins, setCoins] = useState(0);
     const [solvedQuestions, setSolvedQuestions] = useState<Set<string>>(new Set());
     const [lastSolvedDate, setLastSolvedDate] = useState<string | null>(null);
+    const [solvedDates, setSolvedDates] = useState<Map<string, number>>(new Map());
 
     useEffect(() => {
         setIsClient(true);
-        setName(() => {
-            const saved = localStorage.getItem("name");
-            return saved ? saved : "Coder";
-        });
-        setJoinedDate(() => {
-            const saved = localStorage.getItem("lastSolvedDate");
-            return saved ? saved : new Date().toISOString().split("T")[0];
-        });
-        setStreak(() => {
-            const saved = localStorage.getItem("streak");
-            return saved ? parseInt(saved) : 0;
-        });
-        setCoins(() => {
-            const saved = localStorage.getItem("coins");
-            return saved ? parseInt(saved) : 100;
-        });
-        setSolvedQuestions(() => {
-            const saved = localStorage.getItem("solvedQuestions");
-            return saved ? new Set(JSON.parse(saved)) : new Set();
-        });
-        setLastSolvedDate(() => {
-            return localStorage.getItem("lastSolvedDate");
-        });
+
+        setName(localStorage.getItem("name") || "Coder");
+        setJoinedDate(localStorage.getItem("joinedDate") || new Date().toISOString().split("T")[0]);
+        setStreak(parseInt(localStorage.getItem("streak") || "0"));
+        setCoins(parseInt(localStorage.getItem("coins") || "100"));
+
+        const solvedSet = localStorage.getItem("solvedQuestions");
+        setSolvedQuestions(solvedSet ? new Set(JSON.parse(solvedSet)) : new Set());
+
+        const dateCount = localStorage.getItem("solvedDates");
+        setSolvedDates(dateCount ? new Map(JSON.parse(dateCount)) : new Map());
+
+        setLastSolvedDate(localStorage.getItem("lastSolvedDate"));
     }, []);
 
     useEffect(() => {
@@ -58,8 +50,9 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         localStorage.setItem("streak", streak.toString());
         localStorage.setItem("coins", coins.toString());
         localStorage.setItem("solvedQuestions", JSON.stringify([...solvedQuestions]));
+        localStorage.setItem("solvedDates", JSON.stringify(Array.from(solvedDates.entries())));
         if (lastSolvedDate) localStorage.setItem("lastSolvedDate", lastSolvedDate);
-    }, [name, joinedDate, streak, coins, solvedQuestions, lastSolvedDate, isClient]);
+    }, [name, joinedDate, streak, coins, solvedQuestions, solvedDates, lastSolvedDate, isClient]);
 
     const solveQuestion = (id: string) => {
         if (solvedQuestions.has(id)) return;
@@ -87,8 +80,15 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         if (shouldAddCoins) {
             setCoins((coins) => coins + 10);
         }
+
         setSolvedQuestions((prev) => new Set(prev).add(id));
         setLastSolvedDate(today);
+
+        setSolvedDates((prev) => {
+            const newMap = new Map(prev);
+            newMap.set(today, (newMap.get(today) || 0) + 1);
+            return newMap;
+        });
     };
 
     const redeemItem = (cost: number) => {
@@ -108,6 +108,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
                 coins,
                 solvedQuestions,
                 lastSolvedDate,
+                solvedDates,
                 solveQuestion,
                 redeemItem,
             }}>

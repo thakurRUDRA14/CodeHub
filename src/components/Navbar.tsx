@@ -1,13 +1,16 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import StreakCounter from "./ui/streakCounter";
 import CoinCounter from "./ui/coinCounter";
 import { useUser } from "@/context/UserContext";
+import Month from "./Month";
 
 const Navbar: React.FC = () => {
-    const { name, streak, coins } = useUser();
+    const { name, streak, coins, solvedDates } = useUser();
+    const [isOpen, setIsOpen] = useState(false);
+    const monthStart = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
 
     return (
         <nav className='bg-white shadow-sm sticky top-0 z-10'>
@@ -25,9 +28,21 @@ const Navbar: React.FC = () => {
                     </div>
 
                     <div className='flex items-center space-x-4'>
-                        <Link href='/'>
-                            <StreakCounter streak={streak} />
-                        </Link>
+                        <div className='relative'>
+                            <div
+                                onClick={() => setIsOpen((prev) => !prev)}
+                                className='cursor-pointer'>
+                                <StreakCounter streak={streak} />
+                            </div>
+                            {isOpen && (
+                                <div className='absolute right-2/12 top-auto z-20 bg-white'>
+                                    <Month
+                                        monthStart={monthStart}
+                                        solvedDates={solvedDates}
+                                    />
+                                </div>
+                            )}
+                        </div>
 
                         <Link href='/store'>
                             <CoinCounter coins={coins} />
