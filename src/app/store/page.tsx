@@ -33,7 +33,7 @@ const StorePage: React.FC = () => {
                 {redeemedItem && (
                     <div className='bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6'>
                         <span className='font-bold'>Success! </span>
-                        You've redeemed {storeItems.find((item) => item.id === redeemedItem)?.name}
+                        <p>You&rsquo;ve redeemed {storeItems.find((item) => item.id === redeemedItem)?.name}</p>
                     </div>
                 )}
 

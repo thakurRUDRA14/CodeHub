@@ -59,7 +59,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         localStorage.setItem("coins", coins.toString());
         localStorage.setItem("solvedQuestions", JSON.stringify([...solvedQuestions]));
         if (lastSolvedDate) localStorage.setItem("lastSolvedDate", lastSolvedDate);
-    }, [streak, coins, solvedQuestions, lastSolvedDate, isClient]);
+    }, [name, joinedDate, streak, coins, solvedQuestions, lastSolvedDate, isClient]);
 
     const solveQuestion = (id: string) => {
         if (solvedQuestions.has(id)) return;
