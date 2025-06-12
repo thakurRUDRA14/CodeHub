@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
                                 <StreakCounter streak={streak} />
                             </div>
                             {isOpen && (
-                                <div className='absolute right-2/12 top-auto z-20 bg-white'>
+                                <div className='absolute right-2/12 top-full mt-2 z-20 bg-white'>
                                     <Month
                                         monthStart={monthStart}
                                         solvedDates={solvedDates}

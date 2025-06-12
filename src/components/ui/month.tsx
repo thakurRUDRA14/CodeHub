@@ -7,7 +7,7 @@ interface Props {
 }
 
 const Month: React.FC<Props> = ({ monthStart, solvedDates }) => {
-    const monthName = format(monthStart, "MMMM");
+    const monthName = format(monthStart, "MMM");
     const monthEnd = endOfMonth(monthStart);
     const weeks = eachWeekOfInterval({ start: monthStart, end: monthEnd }, { weekStartsOn: 0 });
 
@@ -33,7 +33,7 @@ const Month: React.FC<Props> = ({ monthStart, solvedDates }) => {
             case 4:
                 return "bg-green-700";
             default:
-                return "bg-gray-100";
+                return "bg-gray-200";
         }
     };
 
@@ -42,18 +42,8 @@ const Month: React.FC<Props> = ({ monthStart, solvedDates }) => {
     };
 
     return (
-        <div className='min-w-[200px] shadow-sm rounded-lg p-3 border border-gray-200'>
+        <div className='p-1'>
             <h3 className='text-lg font-semibold text-gray-800 mb-2'>{monthName}</h3>
-
-            <div className='flex justify-between mb-1'>
-                {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((day) => (
-                    <div
-                        key={day}
-                        className='text-xs text-gray-500 w-6 h-6 flex items-center justify-center font-medium'>
-                        {day}
-                    </div>
-                ))}
-            </div>
 
             {weeks.map((weekStart, weekIdx) => {
                 const weekDays = eachDayOfInterval({
@@ -64,7 +54,7 @@ const Month: React.FC<Props> = ({ monthStart, solvedDates }) => {
                 return (
                     <div
                         key={weekIdx}
-                        className='flex justify-between mb-1'>
+                        className='flex justify-start gap-1 mb-1'>
                         {weekDays.map((day, dayIdx) => {
                             const intensity = getIntensity(day);
                             const colorClass = getColorClass(intensity);
@@ -75,12 +65,10 @@ const Month: React.FC<Props> = ({ monthStart, solvedDates }) => {
                             return (
                                 <div
                                     key={`${weekIdx}-${dayIdx}`}
-                                    className={`w-6 h-6 rounded-sm flex items-center justify-center text-xs hover:scale-110 transition-transform ${
+                                    className={`w-3 h-3 rounded-sm flex items-center justify-center text-xs hover:scale-110 transition-transform ${
                                         !isCurrentMonth ? "opacity-30" : "cursor-pointer"
                                     } ${colorClass} ${textClass} ${isToday ? "ring-2 ring-blue-500 font-bold" : ""}`}
-                                    title={`${format(day, "MMM d, yyyy")} - ${intensity || "No"} submissions`}>
-                                    {isCurrentMonth ? day.getDate() : ""}
-                                </div>
+                                    title={`${intensity || "No"} submissions on ${format(day, "MMM d, yyyy")}`}></div>
                             );
                         })}
                     </div>

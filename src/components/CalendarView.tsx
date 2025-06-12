@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Month from "./Month";
+import Month from "./ui/month";
 
 interface CalendarViewProps {
     solvedDates: Map<string, number>;
@@ -19,9 +19,9 @@ const CalendarView: React.FC<CalendarViewProps> = ({ solvedDates }) => {
 
     return (
         <div className='bg-white p-6 rounded-xl shadow-md border border-gray-200 text-center'>
-            <h2 className='text-xl font-bold text-gray-800 mb-5'>{currentYear}</h2>
+            <h2 className='text-xl font-bold text-gray-800 mb-1'>{currentYear}</h2>
 
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 min-[97rem]:grid-cols-6 gap-3'>
+            <div className='flex justify-evenly gap-1 overflow-x-auto no-scrollbar'>
                 {months.map((monthStart, idx) => (
                     <Month
                         key={idx}
